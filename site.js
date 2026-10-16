@@ -57,32 +57,34 @@ document.querySelectorAll('dialog').forEach(function(d){d.addEventListener('clic
 (function(){
 var root=document.querySelector('[data-fc]');if(!root)return;
 var EN=document.documentElement.lang.indexOf('en')===0,loc=EN?'en-GB':'it-IT';
-var S=EN?{lP:'The pilot is the smallest way to try it: 2,000 boxes, measured, with a goal written down before we start. Enter what a new customer is worth to you.',lC:'Pick the number of boxes and enter what a new customer is worth to you. We show the total and how many customers you need to break even.',ktP:'Pilot total',ktC:'Campaign total',ntP:'One flat price, everything included. €1.00 per box, same as any campaign.',ntC:'One flat price, everything included.',cu:['customer','customers'],nb:function(p,c){return 'That is <b>1 customer per '+p+' boxes</b>, about <b>'+c+'%</b> of dinners. Anything beyond that is your margin.'},fp:function(b,v){return 'Format: pilot, '+b+' boxes (€'+b+'). Value of a new customer: €'+v+'.'},fc:function(b,v){return 'Format: campaign, '+b+' boxes (€'+b+'). Value of a new customer: €'+v+'.'}}
- :{lP:'Il pilota è il modo più piccolo per provare: 2.000 scatole, misurate, con un obiettivo scritto prima di partire. Inserisci quanto vale per te un cliente nuovo.',lC:'Scegli le scatole e inserisci quanto vale per te un cliente nuovo. Ti diciamo il totale e quanti clienti servono per rientrare.',ktP:'Totale pilota',ktC:'Totale campagna',ntP:'Un prezzo unico, tutto compreso. €1,00 a scatola, come in ogni campagna.',ntC:'Un prezzo unico, tutto compreso.',cu:['cliente','clienti'],nb:function(p,c){return 'Cioè <b>1 cliente ogni '+p+' scatole</b>, circa lo <b>'+c+'%</b> delle cene. Tutto quello che arriva oltre è margine tuo.'},fp:function(b,v){return 'Formato: pilota, '+b+' scatole (€'+b+'). Valore di un cliente nuovo: €'+v+'.'},fc:function(b,v){return 'Formato: campagna, '+b+' scatole (€'+b+'). Valore di un cliente nuovo: €'+v+'.'}};
+var S=EN?{lP:'The pilot is the smallest way to try it: 2,000 boxes, measured, with a goal written down before we start. Enter what a new customer is worth to you.',lC:'Pick the number of boxes and enter what a new customer is worth to you. We show the total and how many customers you need to break even.',ktP:'Pilot total',ktC:'Campaign total',ntP:'€1.00 per box, everything included.',ntC:'€1.00 per box, everything included.',cu:['customer','customers'],nb:function(p,c){return '<b>1 customer per '+p+' boxes</b> ('+c+'% of dinners). Everything beyond that is your margin.'},fp:function(b,v){return 'Format: pilot, '+b+' boxes (€'+b+'). Value of a new customer: €'+v+'.'},fc:function(b,v){return 'Format: campaign, '+b+' boxes (€'+b+'). Value of a new customer: €'+v+'.'}}
+ :{lP:'Il pilota è il modo più piccolo per provare: 2.000 scatole, misurate, con un obiettivo scritto prima di partire. Inserisci quanto vale per te un cliente nuovo.',lC:'Scegli le scatole e inserisci quanto vale per te un cliente nuovo. Ti diciamo il totale e quanti clienti servono per rientrare.',ktP:'Totale pilota',ktC:'Totale campagna',ntP:'€1,00 a scatola, tutto compreso.',ntC:'€1,00 a scatola, tutto compreso.',cu:['cliente','clienti'],nb:function(p,c){return '<b>1 cliente ogni '+p+' scatole</b> ('+c+'% delle cene). Tutto il resto è margine tuo.'},fp:function(b,v){return 'Formato: pilota, '+b+' scatole (€'+b+'). Valore di un cliente nuovo: €'+v+'.'},fc:function(b,v){return 'Formato: campagna, '+b+' scatole (€'+b+'). Valore di un cliente nuovo: €'+v+'.'}};
 var $=function(s){return root.querySelector(s)};
 var boxes=$('#fc-boxes'),val=$('#fc-value'),mode='pilot',PILOT=2000;
 var nf=function(n){return new Intl.NumberFormat(loc).format(n)};
 var pf=function(p){return new Intl.NumberFormat(loc,{minimumFractionDigits:p<1?1:0,maximumFractionDigits:p<1?2:1}).format(p)};
+var BP=EN?{s:'You break even with',l:'To break even you need'}:{s:'Per rientrare ti bastano',l:'Per rientrare servono'};
+var CT=EN?{p:'Request the pilot',c:'Request a proposal'}:{p:'Richiedi il pilota',c:'Richiedi una proposta'};
 function state(){var isP=mode==='pilot',b=isP?PILOT:(+boxes.value||3000),v=Math.max(1,+val.value||1);return{isP:isP,b:b,v:v}}
 function render(){
  var s=state(),need=Math.ceil(s.b/s.v),per=Math.round(s.b/need);
  $('[data-fc-boxes]').textContent=nf(s.b);
  $('[data-fc-total]').textContent='€'+nf(s.b);
  $('[data-fc-dinners]').textContent=nf(s.b);
+ $('[data-fc-bp]').textContent=need<=10?BP.s:BP.l;
  $('[data-fc-be]').textContent=nf(need)+' '+S.cu[need===1?0:1];
  $('[data-fc-nb]').innerHTML=S.nb(nf(per),pf(need/s.b*100));
  $('[data-fc-people]').textContent=nf(Math.round(s.b*1.5/100)*100)+' – '+nf(Math.round(s.b*2.5/100)*100);
 }
 function setMode(){
  var isP=mode==='pilot';
- $('[data-fc-lead]').textContent=isP?S.lP:S.lC;
  $('[data-fc-kt]').textContent=isP?S.ktP:S.ktC;
  $('[data-fc-nt]').textContent=isP?S.ntP:S.ntC;
- $('[data-fc-slider]').hidden=isP;$('[data-fc-fixed]').hidden=!isP;$('[data-fc-pilot]').hidden=!isP;
+ $('[data-fc-slider]').hidden=isP;$('[data-fc-pilot]').hidden=!isP;var gb=$('[data-fc-go]');if(gb)gb.textContent=isP?CT.p:CT.c;
  root.querySelectorAll('.fc-mode button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.m===mode?'true':'false')});
  render();
 }
-boxes.addEventListener('input',render);val.addEventListener('input',render);
+boxes.addEventListener('input',render);val.addEventListener('input',render);val.addEventListener('focus',function(){try{val.select()}catch(e){}});
 root.querySelectorAll('.fc-chips button').forEach(function(c){c.addEventListener('click',function(){val.value=c.dataset.v;render()})});
 root.querySelectorAll('.fc-mode button').forEach(function(x){x.addEventListener('click',function(){mode=x.dataset.m;setMode()})});
 var go=$('[data-fc-go]');

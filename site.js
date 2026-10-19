@@ -49,8 +49,6 @@ document.querySelectorAll(PREF).forEach(function(r){
     if(!c)return;c.required=w;var q=c.closest('label').querySelector('.req');if(q)q.hidden=!w;
   });
 });
-var tp=document.querySelector('.tpause');
-if(tp){tp.addEventListener('click',function(){var t=tp.closest('.ticker'),p=t.classList.toggle('paused');tp.setAttribute('aria-pressed',p);tp.textContent=p?(EN?'Resume':'Riprendi'):(EN?'Pause':'Pausa')})}
 document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){var d=document.getElementById(b.dataset.open);if(d)d.showModal()})});
 document.querySelectorAll('dialog').forEach(function(d){d.addEventListener('click',function(e){if(e.target===d)d.close()});var x=d.querySelector('.x');if(x)x.addEventListener('click',function(){d.close()})});
 

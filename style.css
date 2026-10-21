@@ -618,3 +618,14 @@ details:last-of-type{border-bottom:1px solid rgba(26,23,20,.3)}
 .foot .wrap.foot4{padding-bottom:4px}
 
 .mock img{width:100%;height:auto;display:block;margin-bottom:10px}
+
+/* Who it suits best: QR action + self-test card (21 Oct 2026) */
+.uc .qr-act{display:flex;gap:8px;align-items:flex-start;margin-top:4px;padding-top:10px;border-top:1px dashed rgba(26,23,20,.3);font-size:.92rem;width:100%}
+.uc .qr-act .ic{width:18px;height:18px;flex:none;margin-top:2px;color:var(--tomato)}
+.uc .qr-act b{font-weight:700}
+.uc.fit-test{border:2px solid var(--ink);border-radius:16px;padding:20px 20px 22px;background:#fff;box-shadow:4px 4px 0 var(--tomato)}
+.uc.fit-test .kind{font-family:"DM Mono",ui-monospace,monospace;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tomato);margin:0}
+.uc.fit-test .checks{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.uc.fit-test .checks li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.uc.fit-test .checks li::before{content:"";flex:none;width:15px;height:15px;margin-top:3px;border:2px solid var(--ink);border-radius:4px}
+.uc.fit-test a{font-weight:700;text-decoration:underline;text-underline-offset:3px}

@@ -1,0 +1,22 @@
+/* BOXAD. QR landing pages (r/...). Uses the tokens in style.css. */
+.qr-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;padding-bottom:14px;font-size:.9rem}
+.qr-top .logo{font-size:1.15rem}
+.qr-top .logo svg{width:26px;height:26px}
+.qr-from{font-family:"DM Mono",ui-monospace,monospace;font-size:.8rem;opacity:.75;text-align:right}
+.qr-hero{padding-top:28px;padding-bottom:20px}
+.qr-brand{font-weight:700;letter-spacing:.02em;text-transform:uppercase;font-size:.85rem;margin:0 0 10px}
+.qr-hero h1{font-size:clamp(2rem,8vw,3.2rem)}
+.qr-hero .lead{font-size:1.1rem;margin:14px 0 0;max-width:560px}
+.qr-actions{display:grid;gap:12px;margin:26px 0 8px;max-width:440px}
+.qr-actions .btn{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px 22px;font-size:1.05rem}
+.qr-actions .btn svg{width:22px;height:22px;flex:none}
+.btn-wa{background:#25D366;color:var(--ink)}
+.qr-note{background:var(--ink);color:var(--flour);padding:12px 16px;border-radius:12px;font-size:.92rem;max-width:440px}
+.qr-demo{display:inline-block;background:var(--tomato);color:var(--ink);font-family:"DM Mono",ui-monospace,monospace;font-size:.75rem;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+.qr-form{padding-top:8px;padding-bottom:36px}
+.qr-form h2{font-size:1.6rem;margin-bottom:14px}
+.qr-form form{max-width:560px}
+.qr-small{font-size:.85rem;opacity:.8;padding-top:18px;padding-bottom:30px}
+.qr-small p:first-child{border-top:2px solid var(--ink);padding-top:14px}
+.qr-small p{margin:4px 0}
+@media (max-width:520px){.wrap{padding-left:16px;padding-right:16px}.qr-from{display:none}}

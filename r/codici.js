@@ -2,10 +2,11 @@
    Shop page (v/): check a code and mark it used. Campaign numbers are for BOXAD only (Google Sheet), not shown to the shop.
    CODES_API: the Google Apps Script web app address (backend/codici.gs, setup steps there).
    While it is empty, or on a page with data-demo, everything runs as a demo in the browser and nothing is saved. */
-var CODES_API='';
+var CODES_API='https://script.google.com/macros/s/AKfycbxfYjgZ6q8JHcadI1ZmcL9FNcVA68YD4_n4PQDDj7h67CToUMMGtcmvxPlKCRzZ5MSB8Q/exec';
 
 function codesCall(params){
-  var q=Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k])}).join('&');
+  /* Google reserves "c" in web app addresses, so the campaign is sent as "camp" */
+  var q=Object.keys(params).map(function(k){return (k==='c'?'camp':k)+'='+encodeURIComponent(params[k])}).join('&');
   return fetch(CODES_API+'?'+q).then(function(r){return r.json()});
 }
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}

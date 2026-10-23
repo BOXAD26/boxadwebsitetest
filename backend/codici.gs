@@ -7,7 +7,8 @@
       - "Campagne", row 1: campagna | prefisso | pin | scadenza | soglia | attiva
         one row per campaign, e.g.: gomme | GOM | 482913 | 2027-01-31 | 200 | si
         (pin = 6 digits you give only to the shop; soglia = euro amount that splits small/big purchases)
-      - "Codici", row 1: codice | campagna | regalo | quando | fonte | richiesto | usato | spesa
+      - "Codici", row 1: codice | campagna | regalo | quando | fonte | richiesto | usato | spesa | nuovo
+        (nuovo = si/no: the shop says if the customer is new; added 23 Oct 2026, just type the header in I1)
    2. In the Sheet: Extensions > Apps Script, paste this whole file, save.
    3. Deploy > New deployment > type "Web app": execute as "Me", who has access "Anyone". Copy the /exec address.
    4. Paste that address in r/codici.js (CODES_API).
@@ -67,10 +68,10 @@ function findCode(code) {
 }
 function iso(d) { return d instanceof Date ? Utilities.formatDate(d, 'Europe/Rome', 'yyyy-MM-dd') : ''; }
 function rowInfo(r, c) {
-  var v = sheet('Codici').getRange(r, 1, 1, 8).getValues()[0];
+  var v = sheet('Codici').getRange(r, 1, 1, 9).getValues()[0];
   var used = v[6] instanceof Date;
   return {
-    code: v[0], gift: v[2], when: v[3], source: v[4], claimed: iso(v[5]), used: iso(v[6]), spend: v[7],
+    code: v[0], gift: v[2], when: v[3], source: v[4], claimed: iso(v[5]), used: iso(v[6]), spend: v[7], isNew: v[8],
     status: used ? 'usato' : (new Date() > c.expires ? 'scaduto' : 'valido'),
     threshold: c.threshold, expires: iso(c.expires)
   };
@@ -121,17 +122,18 @@ function use(p, c) {
   if (!r) return { ok: true, status: 'inesistente' };
   var info = rowInfo(r, c);
   if (info.status !== 'valido') { info.ok = true; return info; }
-  sheet('Codici').getRange(r, 7, 1, 2).setValues([[new Date(), spendBand(p.spend)]]);
+  sheet('Codici').getRange(r, 7, 1, 3).setValues([[new Date(), spendBand(p.spend), newBand(p.nuovo)]]);
   info = rowInfo(r, c); info.ok = true; info.justUsed = true; return info;
 }
 function spend(p, c) {
   var r = codeRow(p, c);
   if (!r) return { ok: true, status: 'inesistente' };
   if (!(sheet('Codici').getRange(r, 7).getValue() instanceof Date)) return { ok: false, err: 'non-usato' };
-  sheet('Codici').getRange(r, 8).setValue(spendBand(p.spend));
+  sheet('Codici').getRange(r, 8, 1, 2).setValues([[spendBand(p.spend), newBand(p.nuovo)]]);
   var info = rowInfo(r, c); info.ok = true; return info;
 }
 function spendBand(v) { return ['no', 'sotto', 'sopra'].indexOf(v) >= 0 ? v : ''; }
+function newBand(v) { return ['si', 'no'].indexOf(v) >= 0 ? v : ''; }
 
 /* ---------- report numbers: BOXAD only, never the shop ---------- */
 function adminOnly(p, fn) {
@@ -146,14 +148,14 @@ function adminOnly(p, fn) {
 }
 function stats(p, c) {
   var rows = sheet('Codici').getDataRange().getValues(), s = {
-    ok: true, claimed: 0, used: 0, spend: { no: 0, sotto: 0, sopra: 0, '': 0 },
+    ok: true, claimed: 0, used: 0, spend: { no: 0, sotto: 0, sopra: 0, '': 0 }, isNew: { si: 0, no: 0, '': 0 },
     gift: {}, when: {}, source: {}, threshold: c.threshold, expires: iso(c.expires)
   };
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][1]) !== c.name) continue;
     s.claimed++;
     tally(s.gift, rows[i][2]); tally(s.when, rows[i][3]); tally(s.source, rows[i][4] || 'diretto');
-    if (rows[i][6] instanceof Date) { s.used++; s.spend[rows[i][7] || '']++; }
+    if (rows[i][6] instanceof Date) { s.used++; s.spend[rows[i][7] || '']++; s.isNew[rows[i][8] || '']++; }
   }
   return s;
 }

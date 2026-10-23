@@ -2,7 +2,7 @@
    Shop page (v/): check a code and mark it used. Campaign numbers are for BOXAD only (Google Sheet), not shown to the shop.
    CODES_API: the Google Apps Script web app address (backend/codici.gs, setup steps there).
    While it is empty, or on a page with data-demo, everything runs as a demo in the browser and nothing is saved. */
-var CODES_API='';
+var CODES_API='https://script.google.com/macros/s/AKfycbxfYjgZ6q8JHcadI1ZmcL9FNcVA68YD4_n4PQDDj7h67CToUMMGtcmvxPlKCRzZ5MSB8Q/exec';
 
 function codesCall(params){
   var q=Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k])}).join('&');

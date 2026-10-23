@@ -1,5 +1,5 @@
 /* BOXAD. gift codes. Customer pages (r/<campagna>/): pick a gift, get a single-use code, book on WhatsApp with it.
-   Shop page (v/): check a code, mark it used, see the campaign numbers.
+   Shop page (v/): check a code and mark it used. Campaign numbers are for BOXAD only (Google Sheet), not shown to the shop.
    CODES_API: the Google Apps Script web app address (backend/codici.gs, setup steps there).
    While it is empty, or on a page with data-demo, everything runs as a demo in the browser and nothing is saved. */
 var CODES_API='';
@@ -79,7 +79,7 @@ function tick(fn){if(typeof count==='function')fn()}
   var app=document.querySelector('[data-shop]');if(!app)return;
   var qs=new URLSearchParams(location.search);
   var login=document.getElementById('accesso'),panel=document.getElementById('negozio'),checkF=document.getElementById('verifica');
-  var res=document.getElementById('esito'),statsBox=document.getElementById('numeri');
+  var res=document.getElementById('esito');
   var S={c:(qs.get('c')||'').toLowerCase().replace(/[^a-z0-9-]/g,''),pin:''};
   var demo=function(){return !CODES_API||S.c==='esempio'};
   if(S.c)login.querySelector('[name=c]').value=S.c;
@@ -94,11 +94,7 @@ function tick(fn){if(typeof count==='function')fn()}
   function api(p){
     if(!demo()){p.c=S.c;p.pin=S.pin;return codesCall(p)}
     var r,code=String(p.code||'').toUpperCase().replace(/\s/g,'');
-    if(p.a==='stats'){
-      var s={ok:true,claimed:0,used:0,spend:{no:0,sotto:0,sopra:0,'':0},gift:{},when:{},source:{},threshold:200};
-      Object.keys(D.codes).forEach(function(k){var x=D.codes[k];s.claimed++;s.gift[x.gift]=(s.gift[x.gift]||0)+1;s.when[x.when]=(s.when[x.when]||0)+1;if(x.used){s.used++;s.spend[x.spend||'']++}});
-      return Promise.resolve(s);
-    }
+    if(p.a==='login')return Promise.resolve({ok:true});
     r=demoCode(code);if(!r)return Promise.resolve({ok:true,status:'inesistente'});
     var today=new Date().toISOString().slice(0,10),just=false;
     if(p.a==='use'&&r.status==='valido'){r.status='usato';r.used=today;r.spend=p.spend||'';just=true}
@@ -112,32 +108,16 @@ function tick(fn){if(typeof count==='function')fn()}
     res.appendChild(p);
   }
 
-  function loadStats(){
-    api({a:'stats'}).then(function(s){
-      if(!s.ok)return;
-      var buy=s.spend.sotto+s.spend.sopra;
-      statsBox.querySelector('[data-n=claimed]').textContent=s.claimed;
-      statsBox.querySelector('[data-n=used]').textContent=s.used;
-      statsBox.querySelector('[data-n=buy]').textContent=buy;
-      var list=statsBox.querySelector('[data-list]');list.innerHTML='';
-      [['Regalo scelto',s.gift],['Quando',s.when],['Da dove',s.source]].forEach(function(g){
-        var keys=Object.keys(g[1]||{});if(!keys.length)return;
-        var h=document.createElement('h3');h.textContent=g[0];list.appendChild(h);
-        keys.sort(function(a,b){return g[1][b]-g[1][a]}).forEach(function(k){var li=document.createElement('p');li.textContent=k+' · '+g[1][k];list.appendChild(li)});
-      });
-    });
-  }
-
   login.addEventListener('submit',function(e){
     e.preventDefault();
     S.c=login.querySelector('[name=c]').value.toLowerCase().replace(/[^a-z0-9-]/g,'');
     S.pin=login.querySelector('[name=pin]').value.trim();
-    api({a:'stats'}).then(function(j){
+    api({a:'login'}).then(function(j){
       if(!j.ok)return fail(j);
       if(login.querySelector('[name=ricorda]').checked)store('boxad-pin-'+S.c,S.pin);
       login.hidden=true;panel.hidden=false;res.hidden=true;
       panel.querySelector('[data-campaign-name]').textContent=S.c+(demo()?' (demo)':'');
-      loadStats();checkF.querySelector('input').focus();
+      checkF.querySelector('input').focus();
     },fail);
   });
   if(S.c){var pin=store('boxad-pin-'+S.c);if(pin||demo()){login.querySelector('[name=pin]').value=pin||'0000';login.requestSubmit()}}
@@ -165,7 +145,7 @@ function tick(fn){if(typeof count==='function')fn()}
     var f=res.querySelector('form');
     if(f)f.addEventListener('submit',function(e){
       e.preventDefault();var sp=f.querySelector('input[name=spesa]:checked');
-      api({a:f.querySelector('[data-go]').dataset.action,code:j.code,spend:sp?sp.value:''}).then(function(k){if(!k.ok)return fail(k);render(k);loadStats()},fail);
+      api({a:f.querySelector('[data-go]').dataset.action,code:j.code,spend:sp?sp.value:''}).then(function(k){if(!k.ok)return fail(k);render(k)},fail);
     });
   }
   checkF.addEventListener('submit',function(e){

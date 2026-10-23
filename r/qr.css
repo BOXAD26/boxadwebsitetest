@@ -68,9 +68,3 @@
 .shop-info{font-size:.95rem}
 .shop-result form{display:grid;gap:14px}
 .shop-result legend{font-size:1rem}
-.shop-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.shop-stats p{margin:0;display:grid}
-.shop-stats b{font-family:"Archivo Black","Arial Black",sans-serif;font-size:1.8rem;line-height:1.1}
-.shop-stats span{font-size:.85rem}
-.shop-list h3{font-size:.95rem;margin:12px 0 4px}
-.shop-list p{margin:0;font-size:.95rem}

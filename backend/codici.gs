@@ -10,7 +10,10 @@
       - "Codici", row 1: codice | campagna | regalo | quando | fonte | richiesto | usato | spesa
    2. In the Sheet: Extensions > Apps Script, paste this whole file, save.
    3. Deploy > New deployment > type "Web app": execute as "Me", who has access "Anyone". Copy the /exec address.
-   4. Paste that address in r/codici.js (CODES_API). */
+   4. Paste that address in r/codici.js (CODES_API).
+   Results are for BOXAD only: the shop page can check and mark codes but never sees campaign numbers.
+   Read the numbers in the "Codici" tab, or call ?a=stats&c=<campagna>&admin=<ADMIN_PIN>
+   after setting ADMIN_PIN in Project Settings > Script properties. */
 
 var ALPHABET = 'ACEFHJKMNPRTUVWXY3479'; // no 0/O, 1/I/L, 2/Z, 5/S, 6/G, 8/B: easy to read aloud
 var MAX_CLAIMS_PER_MIN = 30;           // per campaign: stops scripted floods
@@ -22,10 +25,11 @@ function doGet(e) {
   try {
     lock.waitLock(10000);
     if (p.a === 'claim') out = claim(p);
+    else if (p.a === 'login') out = withPin(p, function (p, c) { return { ok: true, threshold: c.threshold }; });
     else if (p.a === 'check') out = withPin(p, check);
     else if (p.a === 'use') out = withPin(p, use);
     else if (p.a === 'spend') out = withPin(p, spend);
-    else if (p.a === 'stats') out = withPin(p, stats);
+    else if (p.a === 'stats') out = adminOnly(p, stats);
     else out = { ok: false, err: 'azione' };
   } catch (err) {
     out = { ok: false, err: 'errore', detail: String(err && err.message || err) };
@@ -128,7 +132,17 @@ function spend(p, c) {
 }
 function spendBand(v) { return ['no', 'sotto', 'sopra'].indexOf(v) >= 0 ? v : ''; }
 
-/* ---------- report numbers ---------- */
+/* ---------- report numbers: BOXAD only, never the shop ---------- */
+function adminOnly(p, fn) {
+  var admin = PropertiesService.getScriptProperties().getProperty('ADMIN_PIN');
+  var c = campaign(p.c);
+  if (!c) return { ok: false, err: 'campagna' };
+  var cache = CacheService.getScriptCache(), key = 'badadmin';
+  var bad = Number(cache.get(key) || 0);
+  if (bad >= MAX_BAD_PINS) return { ok: false, err: 'bloccato' };
+  if (!admin || String(p.admin || '') !== admin) { cache.put(key, String(bad + 1), 900); return { ok: false, err: 'pin' }; }
+  return fn(p, c);
+}
 function stats(p, c) {
   var rows = sheet('Codici').getDataRange().getValues(), s = {
     ok: true, claimed: 0, used: 0, spend: { no: 0, sotto: 0, sopra: 0, '': 0 },

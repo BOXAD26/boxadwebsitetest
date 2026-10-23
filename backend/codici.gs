@@ -31,7 +31,7 @@ function doGet(e) {
     else if (p.a === 'use') out = withPin(p, use);
     else if (p.a === 'spend') out = withPin(p, spend);
     else if (p.a === 'stats') out = adminOnly(p, stats);
-    else out = { ok: false, err: 'azione' };
+    else out = { ok: false, err: 'azione', got: Object.keys(p) }; // shows which parameters arrived
   } catch (err) {
     out = { ok: false, err: 'errore', detail: String(err && err.message || err) };
   } finally {

@@ -5,7 +5,8 @@
 var CODES_API='https://script.google.com/macros/s/AKfycbxfYjgZ6q8JHcadI1ZmcL9FNcVA68YD4_n4PQDDj7h67CToUMMGtcmvxPlKCRzZ5MSB8Q/exec';
 
 function codesCall(params){
-  var q=Object.keys(params).map(function(k){return k+'='+encodeURIComponent(params[k])}).join('&');
+  /* Google reserves "c" in web app addresses, so the campaign is sent as "camp" */
+  var q=Object.keys(params).map(function(k){return (k==='c'?'camp':k)+'='+encodeURIComponent(params[k])}).join('&');
   return fetch(CODES_API+'?'+q).then(function(r){return r.json()});
 }
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}

@@ -12,7 +12,7 @@
    3. Deploy > New deployment > type "Web app": execute as "Me", who has access "Anyone". Copy the /exec address.
    4. Paste that address in r/codici.js (CODES_API).
    Results are for BOXAD only: the shop page can check and mark codes but never sees campaign numbers.
-   Read the numbers in the "Codici" tab, or call ?a=stats&c=<campagna>&admin=<ADMIN_PIN>
+   Read the numbers in the "Codici" tab, or call ?a=stats&camp=<campagna>&admin=<ADMIN_PIN>
    after setting ADMIN_PIN in Project Settings > Script properties. */
 
 var ALPHABET = 'ACEFHJKMNPRTUVWXY3479'; // no 0/O, 1/I/L, 2/Z, 5/S, 6/G, 8/B: easy to read aloud
@@ -20,6 +20,7 @@ var MAX_CLAIMS_PER_MIN = 30;           // per campaign: stops scripted floods
 var MAX_BAD_PINS = 5;                  // per campaign per 15 minutes
 
 function doGet(e) {
+  // the campaign travels as "camp": Google reserves "c" and "sid" in web app addresses
   var p = e.parameter || {}, out;
   var lock = LockService.getScriptLock();
   try {
@@ -77,7 +78,7 @@ function rowInfo(r, c) {
 
 /* ---------- customer: get a code ---------- */
 function claim(p) {
-  var c = campaign(p.c);
+  var c = campaign(p.camp);
   if (!c || !c.active) return { ok: false, err: 'campagna' };
   if (new Date() > c.expires) return { ok: false, err: 'scaduta' };
   var cache = CacheService.getScriptCache(), key = 'claims-' + c.name;
@@ -95,7 +96,7 @@ function claim(p) {
 
 /* ---------- shop: everything below needs the campaign PIN ---------- */
 function withPin(p, fn) {
-  var c = campaign(p.c);
+  var c = campaign(p.camp);
   if (!c) return { ok: false, err: 'campagna' };
   var cache = CacheService.getScriptCache(), key = 'badpin-' + c.name;
   var bad = Number(cache.get(key) || 0);
@@ -135,7 +136,7 @@ function spendBand(v) { return ['no', 'sotto', 'sopra'].indexOf(v) >= 0 ? v : ''
 /* ---------- report numbers: BOXAD only, never the shop ---------- */
 function adminOnly(p, fn) {
   var admin = PropertiesService.getScriptProperties().getProperty('ADMIN_PIN');
-  var c = campaign(p.c);
+  var c = campaign(p.camp);
   if (!c) return { ok: false, err: 'campagna' };
   var cache = CacheService.getScriptCache(), key = 'badadmin';
   var bad = Number(cache.get(key) || 0);

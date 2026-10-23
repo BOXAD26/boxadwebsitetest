@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><base href="/"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>BOXAD. | Verifica codici</title>
+<!-- SHOP PAGE: the advertiser checks a customer's gift code and marks it used.
+     Give the shop the link boxad.it/v/?c=<campaign-name> and the campaign PIN (from the "Campagne" sheet).
+     boxad.it/v/?c=esempio is a demo: any PIN, codes GOM-xxxx, nothing is saved. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='4' y='4' width='40' height='40' rx='10' fill='none' stroke='%231A1714' stroke-width='5'/%3E%3Ccircle cx='16' cy='32' r='5' fill='%23E8412C'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=20261021"><link rel="stylesheet" href="r/qr.css?v=20261023"></head>
+<body class="shop">
+<div class="wrap qr-top"><a class="logo" href="index.html" aria-label="BOXAD. home"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="4" width="40" height="40" rx="10" fill="none" stroke="#1A1714" stroke-width="5"/><circle cx="16" cy="32" r="5" fill="#E8412C"/></svg><span>BOXAD<span class="dot">.</span></span></a><span class="qr-from">Solo per il negozio</span></div>
+<main id="main" class="wrap" data-shop>
+  <h1>Verifica codici<span class="dot">.</span></h1>
+
+  <form id="accesso" class="shop-card">
+    <label>Campagna<input name="c" autocomplete="off" autocapitalize="none" required></label>
+    <label>PIN<input name="pin" type="password" inputmode="numeric" autocomplete="off" required></label>
+    <label class="consent"><input type="checkbox" name="ricorda" checked><span>Ricorda su questo telefono</span></label>
+    <button class="btn btn-ink" type="submit">Entra</button>
+  </form>
+
+  <div id="negozio" hidden>
+    <p class="shop-camp">Campagna: <strong data-campaign-name></strong> · <button class="btn-link" type="button" id="esci">esci</button></p>
+    <form id="verifica" class="shop-card">
+      <label>Codice del cliente<input class="code-input" autocomplete="off" autocapitalize="characters" placeholder="GOM-4821" required></label>
+      <button class="btn btn-ink" type="submit">Verifica</button>
+    </form>
+    <div id="esito" role="status" hidden></div>
+  </div>
+
+  <template id="tpl-esito">
+    <div class="shop-card shop-result">
+      <p class="code" data-code></p>
+      <p data-head></p>
+      <p class="shop-info" data-info></p>
+      <form data-act>
+        <fieldset class="chips">
+          <legend>Ha comprato qualcosa? (facoltativo)</legend>
+          <label><input type="radio" name="spesa" value="no"><span>No</span></label>
+          <label><input type="radio" name="spesa" value="sotto"><span data-low>Sotto</span></label>
+          <label><input type="radio" name="spesa" value="sopra"><span data-high>Sopra</span></label>
+        </fieldset>
+        <button class="btn btn-primary" type="submit" data-go>Segna come usato</button>
+      </form>
+    </div>
+  </template>
+  <p class="qr-small">Qui vedi solo codice, regalo, data e fascia di spesa: nessun nome o numero di telefono.</p>
+</main>
+<script src="r/codici.js?v=20261023"></script>
+</body></html>

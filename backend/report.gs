@@ -189,6 +189,8 @@ function creaReport() {
       bar1: bar(gc.weeks[0], maxWeek), bar2: bar(gc.weeks[1], maxWeek), bar3: bar(gc.weeks[2], maxWeek),
       bar4: bar(gc.weeks[3], maxWeek), bar5: bar(gc.weeks[4], maxWeek),
       dichiarati: v['dichiarati'] === '' ? 'non comunicato' : n0(v['dichiarati']),
+      // the client's own review link, business already filled in (boxad.it/recensione/, see r/recensione.js)
+      link_recensione: 'boxad.it/recensione/?camp=' + camp + '&att=' + encodeURIComponent(String(v['cliente'])).replace(/%20/g, '+'),
       prossimo_passo: v['prossimo passo'] || '', testimonianza: v['testimonianza'] || '—', obiettivo: v['obiettivo'] || '',
       passo1: n0(boxes) + ' scatole stampate con la pubblicità del negozio e un QR, consegnate da ' +
         (nPizz === 1 ? '1 pizzeria' : nPizz + ' pizzerie') + ' a ' + v['zona'] + ' dal ' + day(from) + ' al ' + day(to) + '.',

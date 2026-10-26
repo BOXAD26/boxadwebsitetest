@@ -15,7 +15,7 @@
    REVIEWS (added 26 Oct 2026): the review page boxad.it/recensione/ (EN /en/review/) saves here too.
    The "Recensioni" tab is created by itself on the first review. Nothing is published automatically:
    type "si" in "approvata" and, if you like, a real number in "numero" (e.g. "38 clienti in negozio"),
-   then ask for the review to be added to the site. "post" is a link to a square image for Instagram/Facebook.
+   then ask for the review to be added to the site (only reviews with a comment). "post" is a link to a square image for Instagram/Facebook.
    After pasting a new version of this file: Deploy > Manage deployments > edit > Version "New version" (same /exec address).
    Results are for BOXAD only: the shop page can check and mark codes but never sees campaign numbers.
    Read the numbers in the "Codici" tab, or call ?a=stats&camp=<campagna>&admin=<ADMIN_PIN>
@@ -188,17 +188,17 @@ function review(p) {
   var kind = p.tipo === 'pizzeria' ? 'pizzeria' : 'cliente', lang = p.l === 'en' ? 'en' : 'it';
   var name = clean(p.nome, 80), biz = clean(p.att, 80), text = clean(p.txt, 600);
   var s = stars(p.s1), r = stars(p.s2);
-  if (!name || !biz || !text || !s || !r) return { ok: false, err: 'campi' };
+  if (!name || !biz || !s || !r) return { ok: false, err: 'campi' };
   var pub = ['nome', 'iniziali', 'privata'].indexOf(p.pub) >= 0 ? p.pub : 'privata';
   var again = ['si', 'forse', 'no'].indexOf(p.ri) >= 0 ? p.ri : '';
   var sh = reviewSheet();
   sh.appendRow([new Date(), kind, clean(p.camp, 40), lang, name, biz, s, r, again, text, clean(p.meglio, 400), pub, '', '', '']);
   var row = sh.getLastRow();
-  if (pub !== 'privata') {
+  if (pub !== 'privata' && text) {
     // the square post image for socials: the who-line follows the permission, the number comes from column N
     var who = (pub === 'nome' ? name : initials(name)) + ' · ' + biz;
     sh.getRange(row, 15).setFormula('="https://boxad.it/recensione/card.html?l=' + lang + '&k=' + kind + '&s=' + s + '&r=' + r +
       '&n=' + encodeURIComponent(who).replace(/"/g, '%22') + '&q="&ENCODEURL(J' + row + ')&"&x="&ENCODEURL(N' + row + ')');
-  } else sh.getRange(row, 15).setValue('privata: non pubblicare');
+  } else sh.getRange(row, 15).setValue(text ? 'privata: non pubblicare' : 'solo voti: niente post');
   return { ok: true };
 }

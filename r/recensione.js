@@ -1,5 +1,7 @@
 /* BOXAD. review page (recensione/ and en/review/): clients and pizzerias rate the service and the results.
    Send the link after the results report: boxad.it/recensione/?camp=<campagna> (pizzerias: add &tipo=pizzeria).
+   Personal links fill in the form for the client: &nome=<name>&att=<business>&s1=<1-5 service>&s2=<1-5 results>.
+   recensione/link.html builds them, with the WhatsApp message, from the two numbers the client replied.
    Reviews land in the "Recensioni" tab of the BOXAD codici Sheet (backend/codici.gs). Nothing is published by itself.
    GOOGLE_REVIEW_URL: once the Google Business profile exists, paste its "ask for reviews" link here.
    The thank-you shows it to EVERYONE, whatever the stars: asking only happy clients breaks Google's rules.
@@ -14,12 +16,15 @@ var GOOGLE_REVIEW_URL='';
   document.body.classList.toggle('is-pizzeria',PIZ);
   document.querySelectorAll('[data-for]').forEach(function(el){el.hidden=el.dataset.for!==(PIZ?'pizzeria':'cliente')});
   var demo=document.getElementById('demo-tag');if(demo)demo.hidden=!DEMO;
+  /* personal link: name, business and the stars the client already gave on WhatsApp are filled in */
+  ['nome','att'].forEach(function(n){var x=(qs.get(n)||'').slice(0,80);if(x)f.querySelector('[name="'+n+'"]').value=x});
+  ['s1','s2'].forEach(function(n){var r=f.querySelector('[name="'+n+'"][value="'+qs.get(n)+'"]');if(r)r.checked=true});
   var err=f.querySelector('[data-error]'),btn=f.querySelector('button[type=submit]'),done=document.getElementById('grazie');
   var T=EN?{
-    stars:'Please give both star ratings.',fields:'Please fill in your name, business and a couple of lines about how it went.',pub:'Please tell us whether we may publish your review.',busy:'Many reviews right now: please try again in a minute.',
+    stars:'Please give both star ratings.',fields:'Please fill in your name and business.',pub:'Please tell us whether we may publish your review.',busy:'Many reviews right now: please try again in a minute.',
     ko:'We could not send your review. Please try again or write to info@boxad.it.',off:'No connection. Please try again shortly.'
   }:{
-    stars:'Dai un voto con le stelle a entrambe le domande.',fields:'Scrivi nome, attività e due righe su com\'è andata.',pub:'Dicci se possiamo pubblicare la recensione.',busy:'Tante recensioni in questo momento: riprova tra un minuto.',
+    stars:'Dai un voto con le stelle a entrambe le domande.',fields:'Scrivi nome e attività.',pub:'Dicci se possiamo pubblicare la recensione.',busy:'Tante recensioni in questo momento: riprova tra un minuto.',
     ko:'Non siamo riusciti a inviare la recensione. Riprova o scrivi a info@boxad.it.',off:'Connessione assente. Riprova tra poco.'
   };
   function fail(m){err.textContent=m;err.hidden=false;err.scrollIntoView({block:'center'})}
@@ -32,7 +37,7 @@ var GOOGLE_REVIEW_URL='';
   f.addEventListener('submit',function(e){
     e.preventDefault();err.hidden=true;
     var v=function(n){var x=f.querySelector('[name="'+n+'"]:checked')||f.querySelector('[name="'+n+'"]:not([type=radio])');return x?x.value.trim():''};
-    if(!v('nome')||!v('att')||!v('txt'))return fail(T.fields);
+    if(!v('nome')||!v('att'))return fail(T.fields);
     if(!v('s1')||!v('s2'))return fail(T.stars);
     if(!v('pub'))return fail(T.pub); /* consent is never pre-ticked */
     var p={a:'review',tipo:PIZ?'pizzeria':'cliente',l:EN?'en':'it',camp:(qs.get('camp')||'').replace(/[^a-z0-9-]/gi,'').slice(0,40),

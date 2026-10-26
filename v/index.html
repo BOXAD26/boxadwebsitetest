@@ -39,11 +39,16 @@
           <label><input type="radio" name="spesa" value="sotto"><span data-low>Sotto</span></label>
           <label><input type="radio" name="spesa" value="sopra"><span data-high>Sopra</span></label>
         </fieldset>
+        <fieldset class="chips">
+          <legend>È un cliente nuovo? (facoltativo)</legend>
+          <label><input type="radio" name="nuovo" value="si"><span>Sì, nuovo</span></label>
+          <label><input type="radio" name="nuovo" value="no"><span>No, già cliente</span></label>
+        </fieldset>
         <button class="btn btn-primary" type="submit" data-go>Segna come usato</button>
       </form>
     </div>
   </template>
-  <p class="qr-small">Qui vedi solo codice, regalo, data e fascia di spesa: nessun nome o numero di telefono.</p>
+  <p class="qr-small">Qui vedi solo codice, regalo, data, fascia di spesa e se è un cliente nuovo: nessun nome o numero di telefono.</p>
 </main>
-<script src="r/codici.js?v=20261023c"></script>
+<script src="r/codici.js?v=20261023d"></script>
 </body></html>

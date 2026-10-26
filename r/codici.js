@@ -98,8 +98,8 @@ function tick(fn){if(typeof count==='function')fn()}
     if(p.a==='login')return Promise.resolve({ok:true});
     r=demoCode(code);if(!r)return Promise.resolve({ok:true,status:'inesistente'});
     var today=new Date().toISOString().slice(0,10),just=false;
-    if(p.a==='use'&&r.status==='valido'){r.status='usato';r.used=today;r.spend=p.spend||'';just=true}
-    else if(p.a==='spend'&&r.used){r.spend=p.spend||''}
+    if(p.a==='use'&&r.status==='valido'){r.status='usato';r.used=today;r.spend=p.spend||'';r.isNew=p.nuovo||'';just=true}
+    else if(p.a==='spend'&&r.used){r.spend=p.spend||'';r.isNew=p.nuovo||''}
     return Promise.resolve(Object.assign({ok:true,justUsed:just},r));
   }
   function fail(j){
@@ -136,17 +136,18 @@ function tick(fn){if(typeof count==='function')fn()}
       info.textContent=j.gift+' · '+j.when+(j.claimed?' · richiesto il '+fmtDate(j.claimed):'')+(j.source&&j.source!=='diretto'?' · da '+j.source:'');
       var th=j.threshold?' €'+j.threshold:'';
       t.querySelector('[data-low]').textContent='Sotto'+th;t.querySelector('[data-high]').textContent='Sopra'+th;
-      if(j.spend){var r=t.querySelector('input[value='+j.spend+']');if(r)r.checked=true}
+      if(j.spend){var r=t.querySelector('input[name=spesa][value='+j.spend+']');if(r)r.checked=true}
+      if(j.isNew){var n=t.querySelector('input[name=nuovo][value='+j.isNew+']');if(n)n.checked=true}
       var go=t.querySelector('[data-go]');
       if(j.status==='scaduto'){act.remove()}
-      else if(j.status==='usato'){go.textContent='Aggiorna acquisto';go.dataset.action='spend'}
+      else if(j.status==='usato'){go.textContent='Aggiorna risposte';go.dataset.action='spend'}
       else{go.dataset.action='use'}
     }
     res.appendChild(t);
     var f=res.querySelector('form');
     if(f)f.addEventListener('submit',function(e){
-      e.preventDefault();var sp=f.querySelector('input[name=spesa]:checked');
-      api({a:f.querySelector('[data-go]').dataset.action,code:j.code,spend:sp?sp.value:''}).then(function(k){if(!k.ok)return fail(k);render(k)},fail);
+      e.preventDefault();var sp=f.querySelector('input[name=spesa]:checked'),nw=f.querySelector('input[name=nuovo]:checked');
+      api({a:f.querySelector('[data-go]').dataset.action,code:j.code,spend:sp?sp.value:'',nuovo:nw?nw.value:''}).then(function(k){if(!k.ok)return fail(k);render(k)},fail);
     });
   }
   checkF.addEventListener('submit',function(e){

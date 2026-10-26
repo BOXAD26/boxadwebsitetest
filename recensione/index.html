@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="it"><head><meta charset="utf-8"><base href="/"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
 <title>BOXAD. | Com'è andata?</title>
-<!-- REVIEW PAGE (r/recensione.js). Send after the results report: boxad.it/recensione/?camp=<campagna>
-     Pizzerias: add &tipo=pizzeria. Try it without saving: add ?demo=1. -->
+<!-- REVIEW PAGE (r/recensione.js). Send after the results report: boxad.it/recensione/?camp=<campagna> Try it without saving: add ?demo=1. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='4' y='4' width='40' height='40' rx='10' fill='none' stroke='%231A1714' stroke-width='5'/%3E%3Ccircle cx='16' cy='32' r='5' fill='%23E8412C'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css?v=20261021"><link rel="stylesheet" href="r/qr.css?v=20261026"></head>
 <body class="review">
@@ -11,23 +10,22 @@
   <section class="qr-hero">
     <span class="qr-demo" id="demo-tag" hidden>ANTEPRIMA · NON SALVA NIENTE</span>
     <h1>Com'è andata<span class="dot">?</span></h1>
-    <p class="lead" data-for="cliente">Due minuti per dirci com'è andata la campagna. Ci serve la verità, anche se è scomoda: è l'unico modo per migliorare.</p>
-    <p class="lead" data-for="pizzeria" hidden>Due minuti per dirci com'è andata con le scatole BOXAD. nella tua pizzeria. Ci serve la verità, anche se è scomoda.</p>
+    <p class="lead">Due minuti per dirci com'è andata la campagna. Ci serve la verità, anche se è scomoda: è l'unico modo per migliorare.</p>
   </section>
 
   <form class="review-form" data-review novalidate>
     <div class="row2">
       <label>Nome e cognome<input name="nome" autocomplete="name" maxlength="80" required></label>
-      <label><span data-for="cliente">Attività</span><span data-for="pizzeria" hidden>Pizzeria</span><input name="att" autocomplete="organization" maxlength="80" required></label>
+      <label>Attività<input name="att" autocomplete="organization" maxlength="80" required></label>
     </div>
     <fieldset class="rate">
-      <legend><span data-for="cliente">Come ti sei trovato con il servizio?</span><span data-for="pizzeria" hidden>Come ti sei trovato con BOXAD.?</span></legend>
-      <p class="hint"><span data-for="cliente">Tempi, comunicazione, qualità della stampa e delle scatole.</span><span data-for="pizzeria" hidden>Consegna delle scatole, comunicazione, facilità.</span></p>
+      <legend>Come ti sei trovato con il servizio?</legend>
+      <p class="hint">Tempi, comunicazione, qualità della stampa e delle scatole.</p>
       <div class="stars"><label><input type="radio" name="s1" value="5"><span class="sr">5 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s1" value="4"><span class="sr">4 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s1" value="3"><span class="sr">3 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s1" value="2"><span class="sr">2 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s1" value="1"><span class="sr">1 stella</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label></div>
     </fieldset>
     <fieldset class="rate">
-      <legend><span data-for="cliente">I risultati sono stati quelli che speravi?</span><span data-for="pizzeria" hidden>Le scatole sono piaciute ai tuoi clienti?</span></legend>
-      <p class="hint"><span data-for="cliente">Clienti arrivati, contatti, codici usati.</span><span data-for="pizzeria" hidden>Qualità, commenti che hai sentito.</span></p>
+      <legend>I risultati sono stati quelli che speravi?</legend>
+      <p class="hint">Clienti arrivati, contatti, codici usati.</p>
       <div class="stars"><label><input type="radio" name="s2" value="5"><span class="sr">5 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s2" value="4"><span class="sr">4 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s2" value="3"><span class="sr">3 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s2" value="2"><span class="sr">2 stelle</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label><label><input type="radio" name="s2" value="1"><span class="sr">1 stella</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg></label></div>
     </fieldset>
     <fieldset class="chips">

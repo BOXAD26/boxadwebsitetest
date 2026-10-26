@@ -16,15 +16,12 @@
     <label>Attività<input name="att" placeholder="Gommista Esempio"></label>
     <label>Campagna<input name="camp" placeholder="gomme" autocapitalize="none"></label>
     <label>Telefono WhatsApp (facoltativo)<input name="tel" inputmode="tel" placeholder="39 333 1234567"></label>
-    <fieldset class="chips"><legend>Chi è</legend>
-      <label><input type="radio" name="tipo" value="cliente" checked><span>Inserzionista</span></label>
-      <label><input type="radio" name="tipo" value="pizzeria"><span>Pizzeria</span></label></fieldset>
     <fieldset class="chips"><legend>Lingua</legend>
       <label><input type="radio" name="l" value="it" checked><span>Italiano</span></label>
       <label><input type="radio" name="l" value="en"><span>English</span></label></fieldset>
     <div class="row2">
       <label>Voto servizio (dalla risposta)<input name="s1" inputmode="numeric" maxlength="1" placeholder="1-5"></label>
-      <label>Voto risultati / clienti<input name="s2" inputmode="numeric" maxlength="1" placeholder="1-5"></label>
+      <label>Voto risultati<input name="s2" inputmode="numeric" maxlength="1" placeholder="1-5"></label>
     </div>
   </form>
   <div id="msgs"></div>
@@ -47,17 +44,17 @@
   }
   function draw(){
     var nome=val('nome'),first=nome.split(' ')[0]||'',att=val('att'),camp=val('camp').toLowerCase().replace(/[^a-z0-9-]/g,''),
-      piz=val('tipo')==='pizzeria',EN=val('l')==='en',tel=val('tel').replace(/\D/g,''),
+      EN=val('l')==='en',tel=val('tel').replace(/\D/g,''),
       s1=/^[1-5]$/.test(val('s1'))?val('s1'):'',s2=/^[1-5]$/.test(val('s2'))?val('s2'):'';
-    var q=[];if(camp)q.push('camp='+camp);if(piz)q.push('tipo=pizzeria');if(nome)q.push('nome='+encodeURIComponent(nome).replace(/%20/g,'+'));
+    var q=[];if(camp)q.push('camp='+camp);if(nome)q.push('nome='+encodeURIComponent(nome).replace(/%20/g,'+'));
     if(att)q.push('att='+encodeURIComponent(att).replace(/%20/g,'+'));if(s1)q.push('s1='+s1);if(s2)q.push('s2='+s2);
     var link='https://boxad.it/'+(EN?'en/review/':'recensione/')+(q.length?'?'+q.join('&'):'');
     var m=EN?[
-      'Hi '+first+', here is the report of your campaign with BOXAD. 📦\n\nOne quick question: two scores from 1 to 5, '+(piz?'how it was working with us and how much your customers liked the boxes':'the service and the results')+'. Just reply like this: 5 4',
+      'Hi '+first+', here is the report of your campaign with BOXAD. 📦\n\nOne quick question: two scores from 1 to 5, the service and the results. Just reply like this: 5 4',
       'Thank you '+first+'! If you have one more minute, add a line here (it\'s already filled in with your scores):\n'+link+'\nWith your permission we\'ll publish it with your business name.',
       'Hi '+first+', a last small favour: if you have a minute, how did it go with BOXAD.? '+link+'\nThank you either way!'
     ]:[
-      'Ciao '+first+', ecco il report della '+(piz?'campagna con le scatole BOXAD. nella tua pizzeria':'tua campagna con BOXAD.')+' 📦\n\nUna domanda veloce: due voti da 1 a 5, '+(piz?'come ti sei trovato con noi e quanto sono piaciute le scatole ai tuoi clienti':'il servizio e i risultati')+'. Basta rispondere così: 5 4',
+      'Ciao '+first+', ecco il report della tua campagna con BOXAD. 📦\n\nUna domanda veloce: due voti da 1 a 5, il servizio e i risultati. Basta rispondere così: 5 4',
       'Grazie '+first+'! Se hai ancora un minuto, lascia due righe qui (i tuoi voti sono già inseriti):\n'+link+'\nCon il tuo permesso la pubblichiamo con il nome della tua attività.',
       'Ciao '+first+', un ultimo piccolo favore: se hai un minuto, com\'è andata con BOXAD.? '+link+'\nGrazie in ogni caso!'
     ];

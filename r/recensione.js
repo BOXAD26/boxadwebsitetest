@@ -1,5 +1,5 @@
-/* BOXAD. review page (recensione/ and en/review/): clients and pizzerias rate the service and the results.
-   Send the link after the results report: boxad.it/recensione/?camp=<campagna> (pizzerias: add &tipo=pizzeria).
+/* BOXAD. review page (recensione/ and en/review/): advertisers rate the service and the results.
+   No reviews from pizzerias (Malik, 26 Oct 2026). Send with the results report: boxad.it/recensione/?camp=<campagna>.
    Personal links fill in the form for the client: &nome=<name>&att=<business>&s1=<1-5 service>&s2=<1-5 results>.
    recensione/link.html builds them, with the WhatsApp message, from the two numbers the client replied.
    Reviews land in the "Recensioni" tab of the BOXAD codici Sheet (backend/codici.gs). Nothing is published by itself.
@@ -12,9 +12,7 @@ var GOOGLE_REVIEW_URL='';
 (function(){
   var f=document.querySelector('form[data-review]');if(!f)return;
   var EN=document.documentElement.lang==='en',qs=new URLSearchParams(location.search);
-  var DEMO=qs.has('demo')||!REVIEWS_API,PIZ=qs.get('tipo')==='pizzeria';
-  document.body.classList.toggle('is-pizzeria',PIZ);
-  document.querySelectorAll('[data-for]').forEach(function(el){el.hidden=el.dataset.for!==(PIZ?'pizzeria':'cliente')});
+  var DEMO=qs.has('demo')||!REVIEWS_API;
   var demo=document.getElementById('demo-tag');if(demo)demo.hidden=!DEMO;
   /* personal link: name, business and the stars the client already gave on WhatsApp are filled in */
   ['nome','att'].forEach(function(n){var x=(qs.get(n)||'').slice(0,80);if(x)f.querySelector('[name="'+n+'"]').value=x});
@@ -40,7 +38,7 @@ var GOOGLE_REVIEW_URL='';
     if(!v('nome')||!v('att'))return fail(T.fields);
     if(!v('s1')||!v('s2'))return fail(T.stars);
     if(!v('pub'))return fail(T.pub); /* consent is never pre-ticked */
-    var p={a:'review',tipo:PIZ?'pizzeria':'cliente',l:EN?'en':'it',camp:(qs.get('camp')||'').replace(/[^a-z0-9-]/gi,'').slice(0,40),
+    var p={a:'review',l:EN?'en':'it',camp:(qs.get('camp')||'').replace(/[^a-z0-9-]/gi,'').slice(0,40),
       nome:v('nome'),att:v('att'),s1:v('s1'),s2:v('s2'),ri:v('ri'),txt:v('txt'),meglio:v('meglio'),pub:v('pub'),hp:v('sito')};
     if(DEMO)return thanks();
     btn.disabled=true;

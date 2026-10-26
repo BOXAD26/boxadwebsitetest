@@ -13,7 +13,7 @@
    3. Deploy > New deployment > type "Web app": execute as "Me", who has access "Anyone". Copy the /exec address.
    4. Paste that address in r/codici.js (CODES_API).
    REVIEWS (added 26 Oct 2026): the review page boxad.it/recensione/ (EN /en/review/) saves here too.
-   The "Recensioni" tab is created by itself on the first review. Nothing is published automatically:
+   Advertisers only. The "Recensioni" tab is created by itself on the first review. Nothing is published automatically:
    type "si" in "approvata" and, if you like, a real number in "numero" (e.g. "38 clienti in negozio"),
    then ask for the review to be added to the site (only reviews with a comment). "post" is a link to a square image for Instagram/Facebook.
    After pasting a new version of this file: Deploy > Manage deployments > edit > Version "New version" (same /exec address).
@@ -167,8 +167,8 @@ function stats(p, c) {
 }
 function tally(o, k) { k = String(k || '-'); o[k] = (o[k] || 0) + 1; }
 
-/* ---------- reviews: clients and pizzerias rate BOXAD (boxad.it/recensione/) ---------- */
-var REVIEW_HEAD = ['data', 'tipo', 'campagna', 'lingua', 'nome', 'attivita', 'servizio', 'risultati', 'rifarebbe',
+/* ---------- reviews: advertisers rate BOXAD (boxad.it/recensione/) ---------- */
+var REVIEW_HEAD = ['data', 'campagna', 'lingua', 'nome', 'attivita', 'servizio', 'risultati', 'rifarebbe',
   'commento', 'da migliorare (privato)', 'pubblicare', 'approvata', 'numero', 'post'];
 var MAX_REVIEWS_PER_MIN = 10;
 function reviewSheet() {
@@ -185,20 +185,20 @@ function review(p) {
   var cache = CacheService.getScriptCache(), n = Number(cache.get('reviews') || 0);
   if (n >= MAX_REVIEWS_PER_MIN) return { ok: false, err: 'troppi' };
   cache.put('reviews', String(n + 1), 60);
-  var kind = p.tipo === 'pizzeria' ? 'pizzeria' : 'cliente', lang = p.l === 'en' ? 'en' : 'it';
+  var lang = p.l === 'en' ? 'en' : 'it';
   var name = clean(p.nome, 80), biz = clean(p.att, 80), text = clean(p.txt, 600);
   var s = stars(p.s1), r = stars(p.s2);
   if (!name || !biz || !s || !r) return { ok: false, err: 'campi' };
   var pub = ['nome', 'iniziali', 'privata'].indexOf(p.pub) >= 0 ? p.pub : 'privata';
   var again = ['si', 'forse', 'no'].indexOf(p.ri) >= 0 ? p.ri : '';
   var sh = reviewSheet();
-  sh.appendRow([new Date(), kind, clean(p.camp, 40), lang, name, biz, s, r, again, text, clean(p.meglio, 400), pub, '', '', '']);
+  sh.appendRow([new Date(), clean(p.camp, 40), lang, name, biz, s, r, again, text, clean(p.meglio, 400), pub, '', '', '']);
   var row = sh.getLastRow();
   if (pub !== 'privata' && text) {
     // the square post image for socials: the who-line follows the permission, the number comes from column N
     var who = (pub === 'nome' ? name : initials(name)) + ' · ' + biz;
-    sh.getRange(row, 15).setFormula('="https://boxad.it/recensione/card.html?l=' + lang + '&k=' + kind + '&s=' + s + '&r=' + r +
-      '&n=' + encodeURIComponent(who).replace(/"/g, '%22') + '&q="&ENCODEURL(J' + row + ')&"&x="&ENCODEURL(N' + row + ')');
-  } else sh.getRange(row, 15).setValue(text ? 'privata: non pubblicare' : 'solo voti: niente post');
+    sh.getRange(row, 14).setFormula('="https://boxad.it/recensione/card.html?l=' + lang + '&s=' + s + '&r=' + r +
+      '&n=' + encodeURIComponent(who).replace(/"/g, '%22') + '&q="&ENCODEURL(I' + row + ')&"&x="&ENCODEURL(M' + row + ')');
+  } else sh.getRange(row, 14).setValue(text ? 'privata: non pubblicare' : 'solo voti: niente post');
   return { ok: true };
 }

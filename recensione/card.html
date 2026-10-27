@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><base href="/"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>BOXAD. | Post recensione</title>
+<!-- SOCIAL POST: a 1080 x 1080 square for Instagram/Facebook, built from one approved review.
+     Open the link in the "post" column of the "Recensioni" sheet, then take a screenshot of the square
+     (on a PC: browser zoom so the square fits, or devtools device size 1080 x 1080).
+     Only use reviews with permission (pubblicare = nome or iniziali) and approvata = si. -->
+<link rel="stylesheet" href="style.css?v=20261027">
+<style>
+body{margin:0;background:#d9d2c5;min-height:100vh;display:grid;place-items:center;padding:16px}
+.post{width:1080px;height:1080px;background:var(--flour);border:0;position:relative;padding:96px;box-sizing:border-box;display:flex;flex-direction:column;transform-origin:center;flex:none}
+.post .stars{display:flex;gap:10px;align-items:center;font-size:30px;font-weight:700}
+.post .stars svg{width:54px;height:54px;fill:var(--tomato);stroke:var(--ink);stroke-width:1.4;stroke-linejoin:round}
+.post .stars svg.off{fill:#fff}
+.post .stars span{margin-left:14px;min-width:300px}
+.post blockquote{font-family:"Archivo Black","Arial Black",sans-serif;font-size:58px;line-height:1.12;margin:56px 0 0;flex:1;overflow:hidden}
+.post blockquote::before{content:"“";color:var(--tomato)}
+.post blockquote::after{content:"”";color:var(--tomato)}
+.post .p-num{display:inline-block;background:var(--ink);color:var(--flour);font-family:"DM Mono",ui-monospace,monospace;font-size:34px;padding:12px 26px;border-radius:999px;margin:0 0 28px;align-self:flex-start}
+.post .p-who{font-size:36px;font-weight:700;margin:0}
+.post .p-foot{display:flex;justify-content:space-between;align-items:center;border-top:4px solid var(--ink);margin-top:36px;padding-top:30px;gap:24px}
+.post .logo{font-size:52px}.post .logo svg{width:58px;height:58px}
+.post .p-tag{font-size:26px;font-weight:600;white-space:nowrap}
+</style></head>
+<body>
+<div class="post" id="post">
+  <div data-stars></div>
+  <blockquote data-q></blockquote>
+  <p class="p-num" data-x hidden></p>
+  <p class="p-who" data-n></p>
+  <div class="p-foot"><span class="logo"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="4" width="40" height="40" rx="10" fill="none" stroke="#1A1714" stroke-width="5"/><circle cx="16" cy="32" r="5" fill="#E8412C"/></svg><span>BOXAD<span class="dot">.</span></span></span><span class="p-tag" data-tag></span></div>
+</div>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search),EN=q.get('l')==='en';
+  var STAR='<svg viewBox="0 0 24 24"%C><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
+  function row(n,label){n=Math.max(0,Math.min(5,Number(n)||0));var h='';for(var i=1;i<=5;i++)h+=STAR.replace('%C',i>n?' class="off"':'');return '<div class="stars">'+h+'<span>'+label+'</span></div>'}
+  var L=EN?['Service','Results','Pizza box ads in Treviso']:['Servizio','Risultati','Pubblicità sulle scatole della pizza a Treviso'];
+  document.documentElement.lang=EN?'en':'it';
+  document.querySelector('[data-stars]').innerHTML=row(q.get('s'),L[0])+row(q.get('r'),L[1]);
+  document.querySelector('[data-q]').textContent=q.get('q')||'';
+  document.querySelector('[data-n]').textContent=q.get('n')||'';
+  document.querySelector('[data-tag]').textContent=L[2];
+  var x=q.get('x');if(x){var el=document.querySelector('[data-x]');el.textContent=x;el.hidden=false}
+  /* shrink long quotes so they fit */
+  var b=document.querySelector('[data-q]'),fs=58;while(b.scrollHeight>b.clientHeight&&fs>30){fs-=2;b.style.fontSize=fs+'px'}
+  function fit(){var s=Math.min(1,(innerWidth-32)/1080,(innerHeight-32)/1080);document.getElementById('post').style.transform='scale('+s+')';document.body.style.height=Math.max(1080*s+32,0)+'px'}
+  fit();addEventListener('resize',fit);
+})();
+</script>
+</body></html>

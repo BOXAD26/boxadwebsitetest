@@ -68,3 +68,21 @@
 .shop-info{font-size:.95rem}
 .shop-result form{display:grid;gap:14px}
 .shop-result legend{font-size:1rem}
+/* reviews (r/recensione.js) */
+.review-form{max-width:560px;gap:26px;padding-bottom:40px}
+.review-form legend{font-size:1.15rem;margin-bottom:4px}
+.review-form .hint{margin:0 0 4px;font-size:.92rem;opacity:.8}
+.review-form small{font-weight:400;opacity:.75}
+.review-form .pub{gap:10px}
+.review-form .btn-ink{padding:18px 22px;font-size:1.1rem;width:100%}
+.stars{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.stars label{position:relative;cursor:pointer;display:block}
+.stars input{position:absolute;opacity:0;width:1px;height:1px}
+.stars svg{width:48px;height:48px;display:block;fill:#fff;stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round}
+.stars label:hover svg,.stars label:hover~label svg,.stars label:has(input:checked) svg,.stars label:has(input:checked)~label svg{fill:var(--tomato)}
+.stars:hover label:has(~label:hover) svg{fill:#fff}
+.stars input:focus-visible~svg{outline:3px solid var(--ink);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.review-done{max-width:560px;padding:10px 0 48px;outline:none}
+.review-done h2{font-size:2.2rem;margin-bottom:10px}

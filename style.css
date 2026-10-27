@@ -629,3 +629,15 @@ details:last-of-type{border-bottom:1px solid rgba(26,23,20,.3)}
 .uc.fit-test .checks li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
 .uc.fit-test .checks li::before{content:"";flex:none;width:15px;height:15px;margin-top:3px;border:2px solid var(--ink);border-radius:4px}
 .uc.fit-test a{font-weight:700;text-decoration:underline;text-underline-offset:3px}
+
+/* reviews on the home page (see the commented block in index.html) */
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.rv{margin:0;background:#fff;border:2px solid var(--ink);border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:6px 6px 0 var(--tomato)}
+.rv-stars{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.rv-stars i{display:flex;gap:2px}
+.rv-stars svg{width:22px;height:22px;fill:var(--tomato);stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round}
+.rv-stars svg.off{fill:#fff}
+.rv blockquote{margin:0;font-size:1.15rem;line-height:1.45;flex:1}
+.rv-num{margin:0;align-self:flex-start;background:var(--ink);color:var(--flour);font-family:"DM Mono",ui-monospace,monospace;font-size:.9rem;padding:4px 14px;border-radius:999px}
+.rv figcaption{font-weight:700}
+@media (max-width:520px){.rv-grid{grid-template-columns:1fr}}

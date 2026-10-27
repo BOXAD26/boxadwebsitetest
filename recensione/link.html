@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><base href="/"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>BOXAD. | Link recensione</title>
+<!-- FOR MALIK ONLY: builds the WhatsApp messages and the client's personal review link.
+     1) send message 1 with the report; 2) when the client replies with two numbers (e.g. "5 4"), type them here
+     and send message 2: the link opens the review page with name, business and stars already filled in;
+     3) after 7 days without a review, send the reminder once. Nothing typed here is saved or sent anywhere. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect x='4' y='4' width='40' height='40' rx='10' fill='none' stroke='%231A1714' stroke-width='5'/%3E%3Ccircle cx='16' cy='32' r='5' fill='%23E8412C'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=20261027"><link rel="stylesheet" href="r/qr.css?v=20261026"></head>
+<body class="shop">
+<div class="wrap qr-top"><a class="logo" href="index.html" aria-label="BOXAD. home"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="4" width="40" height="40" rx="10" fill="none" stroke="#1A1714" stroke-width="5"/><circle cx="16" cy="32" r="5" fill="#E8412C"/></svg><span>BOXAD<span class="dot">.</span></span></a><span class="qr-from">Solo per BOXAD.</span></div>
+<main id="main" class="wrap">
+  <h1>Link recensione<span class="dot">.</span></h1>
+  <form class="shop-card" id="dati" onsubmit="return false">
+    <label>Nome del referente<input name="nome" placeholder="Mario Rossi"></label>
+    <label>Attività<input name="att" placeholder="Gommista Esempio"></label>
+    <label>Campagna<input name="camp" placeholder="gomme" autocapitalize="none"></label>
+    <label>Telefono WhatsApp (facoltativo)<input name="tel" inputmode="tel" placeholder="39 333 1234567"></label>
+    <fieldset class="chips"><legend>Lingua</legend>
+      <label><input type="radio" name="l" value="it" checked><span>Italiano</span></label>
+      <label><input type="radio" name="l" value="en"><span>English</span></label></fieldset>
+    <div class="row2">
+      <label>Voto servizio (dalla risposta)<input name="s1" inputmode="numeric" maxlength="1" placeholder="1-5"></label>
+      <label>Voto risultati<input name="s2" inputmode="numeric" maxlength="1" placeholder="1-5"></label>
+    </div>
+  </form>
+  <div id="msgs"></div>
+  <p class="qr-small">Niente di quello che scrivi qui viene salvato o inviato: la pagina prepara solo i testi.</p>
+</main>
+<script>
+(function(){
+  var f=document.getElementById('dati'),out=document.getElementById('msgs');
+  function val(n){var x=f.querySelector('[name='+n+']:checked')||f.querySelector('[name='+n+']');return x?x.value.trim():''}
+  function card(title,text,tel){
+    var d=document.createElement('div');d.className='shop-card';
+    var h=document.createElement('h2');h.textContent=title;
+    var p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.style.margin='0';p.style.overflowWrap='anywhere';p.textContent=text;
+    var row=document.createElement('div');row.style.cssText='display:flex;gap:10px;flex-wrap:wrap';
+    var c=document.createElement('button');c.type='button';c.className='btn btn-ink';c.textContent='Copia';
+    c.onclick=function(){navigator.clipboard.writeText(text).then(function(){c.textContent='Copiato'})};
+    var w=document.createElement('a');w.className='btn btn-wa';w.textContent='Apri WhatsApp';w.target='_blank';w.rel='noopener';
+    w.href='https://wa.me/'+tel+'?text='+encodeURIComponent(text);
+    row.append(c,w);d.append(h,p,row);return d;
+  }
+  function draw(){
+    var nome=val('nome'),first=nome.split(' ')[0]||'',att=val('att'),camp=val('camp').toLowerCase().replace(/[^a-z0-9-]/g,''),
+      EN=val('l')==='en',tel=val('tel').replace(/\D/g,''),
+      s1=/^[1-5]$/.test(val('s1'))?val('s1'):'',s2=/^[1-5]$/.test(val('s2'))?val('s2'):'';
+    var q=[];if(camp)q.push('camp='+camp);if(nome)q.push('nome='+encodeURIComponent(nome).replace(/%20/g,'+'));
+    if(att)q.push('att='+encodeURIComponent(att).replace(/%20/g,'+'));if(s1)q.push('s1='+s1);if(s2)q.push('s2='+s2);
+    var link='https://boxad.it/'+(EN?'en/review/':'recensione/')+(q.length?'?'+q.join('&'):'');
+    var m=EN?[
+      'Hi '+first+', here is the report of your campaign with BOXAD. 📦\n\nOne quick question: two scores from 1 to 5, the service and the results. Just reply like this: 5 4',
+      'Thank you '+first+'! If you have one more minute, add a line here (it\'s already filled in with your scores):\n'+link+'\nWith your permission we\'ll publish it with your business name.',
+      'Hi '+first+', a last small favour: if you have a minute, how did it go with BOXAD.? '+link+'\nThank you either way!'
+    ]:[
+      'Ciao '+first+', ecco il report della tua campagna con BOXAD. 📦\n\nUna domanda veloce: due voti da 1 a 5, il servizio e i risultati. Basta rispondere così: 5 4',
+      'Grazie '+first+'! Se hai ancora un minuto, lascia due righe qui (i tuoi voti sono già inseriti):\n'+link+'\nCon il tuo permesso la pubblichiamo con il nome della tua attività.',
+      'Ciao '+first+', un ultimo piccolo favore: se hai un minuto, com\'è andata con BOXAD.? '+link+'\nGrazie in ogni caso!'
+    ];
+    out.textContent='';
+    out.append(card('1 · Con il report',m[0],tel),card('2 · Dopo i due voti',m[1],tel),card('3 · Promemoria (una volta, dopo 7 giorni)',m[2],tel));
+  }
+  f.addEventListener('input',draw);draw();
+})();
+</script>
+</body></html>

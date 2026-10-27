@@ -28,6 +28,8 @@ function tick(fn){if(typeof count==='function')fn()}
     out.querySelector('[data-code]').textContent=d.code;
     out.querySelector('[data-gift]').textContent=d.gift;
     out.querySelector('[data-expires]').textContent=fmtDate(d.expires);
+    var until=out.querySelector('[data-until]');
+    if(until&&ds.openEnd!==undefined)until.textContent='fino ad almeno 4 settimane dopo la fine della campagna';
     out.querySelector('[data-again]').hidden=!again;
     var msg='Ciao! Ho il codice '+d.code+' dalla scatola della pizza. Vorrei: '+d.gift+'. Quando: '+d.when.toLowerCase()+'.';
     var wa=out.querySelector('[data-track=whatsapp]');

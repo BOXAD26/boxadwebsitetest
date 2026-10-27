@@ -1,10 +1,4 @@
-FONT DA AGGIUNGERE (cartella "fonts")
+FONT DEL SITO (cartella "fonts")
 
-Il sito usa tre font gratuiti (licenza OFL). Scaricali da fonts.google.com e metti qui i file con QUESTI nomi:
-
-1. Archivo Black  -> ArchivoBlack-Regular.ttf
-2. Archivo        -> Archivo-Variable.ttf   (nello ZIP si chiama "Archivo[wdth,wght].ttf": rinominalo)
-3. DM Mono Medium -> DMMono-Medium.ttf
-
-Dopo il caricamento su GitHub i font si attivano da soli. Non serve modificare nulla.
-Facoltativo: converti i .ttf in .woff2 (es. con transfonter.org) e carica anche i .woff2 con gli stessi nomi: il sito sara' piu' veloce.
+I tre font (Archivo Black, Archivo, DM Mono Medium) sono gia qui, in .woff2 e .ttf, ridotti ai caratteri latini.
+Licenza: SIL Open Font License 1.1 (vedi OFL.txt). Non serve fare nulla.

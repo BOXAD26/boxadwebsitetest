@@ -643,6 +643,3 @@ details:last-of-type{border-bottom:1px solid rgba(26,23,20,.3)}
 @media (max-width:520px){.rv-grid{grid-template-columns:1fr}}
 /* Positioning line (28 Oct 2026): "ads that arrive with the pizza, not that interrupt" */
 .hero p.pos{font-family:"Archivo Black","Arial Black",sans-serif;font-size:1.25rem;line-height:1.25;margin:0 0 12px;color:var(--tomato)}
-.why.nums{padding-top:0}
-.why.nums b{font-size:1.4rem}
-.why.nums .src{margin-top:26px}

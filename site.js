@@ -51,3 +51,20 @@ document.querySelectorAll(PREF).forEach(function(r){
 });
 document.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){var d=document.getElementById(b.dataset.open);if(d)d.showModal()})});
 document.querySelectorAll('dialog').forEach(function(d){d.addEventListener('click',function(e){if(e.target===d)d.close()});var x=d.querySelector('.x');if(x)x.addEventListener('click',function(){d.close()})});
+/* VISITS. Counts each page view on boxad.it with GoatCounter (no cookies, no IP kept): only aggregate numbers.
+   Off on previews and copies of the site (any address other than boxad.it). QR pages /r/ count with r/qr.js. */
+var COUNTER=/(^|\.)boxad\.it$/.test(location.hostname)?'https://boxad.goatcounter.com/count':'';
+function count(path,title,isEvent){
+  if(!COUNTER)return;
+  var q='p='+encodeURIComponent(path)+'&t='+encodeURIComponent(title||path)+'&e='+(isEvent?'true':'false')+
+    '&r='+encodeURIComponent(isEvent?'':document.referrer)+'&s='+encodeURIComponent(screen.width+','+screen.height+','+(window.devicePixelRatio||1))+
+    '&rnd='+Math.random().toString(36).slice(2);
+  var url=COUNTER+'?'+q;
+  if(navigator.sendBeacon&&navigator.sendBeacon(url))return;
+  new Image().src=url;
+}
+count(location.pathname,document.title,false);
+/* a sent form counts as "sito-richiesta-<page>" (the form itself still goes only to Formspree) */
+document.querySelectorAll('form[data-subject]').forEach(function(f){
+  f.addEventListener('submit',function(){count('sito-richiesta-'+(location.pathname.replace(/^\/|\.html$/g,'').replace(/\//g,'-')||'home'),f.dataset.subject,true)});
+});

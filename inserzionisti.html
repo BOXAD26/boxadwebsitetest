@@ -31,6 +31,7 @@
 <div class="row2"><label>Nome *<input autocomplete="name" name="Nome" required></label><label>Azienda *<input autocomplete="organization" name="Azienda" required></label></div>
 <div class="row2"><label>Email *<input autocomplete="email" type="email" name="Email" required></label><label>Telefono (facoltativo)<input autocomplete="tel" type="tel" name="Telefono"></label></div>
 <label>Settore<select name="Settore"><option>Concessionaria o gommista</option><option>Ristrutturazioni, serramenti, solare o bagni</option><option>Scuola o centro di formazione</option><option>Agenzia immobiliare</option><option>Showroom cucine o arredamento</option><option>Altro</option></select></label>
+<label id="settore-altro" hidden style="display:none">Quale settore? *<input name="Settore (altro)" placeholder="Per esempio: ottica, palestra, studio dentistico" disabled></label>
 </fieldset>
 <fieldset><legend>La campagna</legend>
 <label>Quartiere o zona da raggiungere<input name="Zona"></label>
@@ -38,7 +39,7 @@
 <label>I tuoi obiettivi *<textarea name="Messaggio" rows="4" required placeholder="Per esempio: più appuntamenti per il cambio gomme prima dell’inverno."></textarea></label>
 </fieldset>
 <div><label class="consent"><input type="checkbox" required><span>Ho letto l’<a href="privacy.html">informativa privacy</a>.</span></label><button class="btn btn-primary" type="submit" style="cursor:pointer">Richiedi una proposta</button><p class="note" style="margin:10px 0 0">Si apre la tua app di posta con la richiesta già compilata: premi Invia.</p><p class="thanks" hidden>Grazie! Se la tua app di posta si è aperta, premi Invia per completare. Oppure scrivici a info@boxad.it.</p></div>
-</form></div></section>
+</form><script>(function(){var s=document.querySelector('select[name="Settore"]'),l=document.getElementById('settore-altro'),i=l.querySelector('input');function t(){var on=s.value==='Altro';l.hidden=!on;l.style.display=on?'':'none';i.disabled=!on;i.required=on;}s.addEventListener('change',t);s.form.addEventListener('reset',function(){setTimeout(t)});t();})();</script></div></section>
 <section class="band"><div class="wrap">
     <h2>Come potrebbe apparire la tua scatola<span class="dot">.</span></h2>
     <p class="lead">Settori diversi, stessa superficie. Gli esempi usano marchi di fantasia e servono solo a mostrare il formato.</p>

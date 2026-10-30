@@ -31,6 +31,7 @@
 <div class="row2"><label>Name *<input autocomplete="name" name="Name" required></label><label>Company *<input autocomplete="organization" name="Company" required></label></div>
 <div class="row2"><label>Email *<input autocomplete="email" type="email" name="Email" required></label><label>Phone (optional)<input autocomplete="tel" type="tel" name="Phone"></label></div>
 <label>Sector<select name="Sector"><option>Estate agency</option><option>Car dealer or tyre centre</option><option>Renovation, windows, solar or bathrooms</option><option>School or training centre</option><option>Real estate agency</option><option>Kitchen or furniture showroom</option><option>Other</option></select></label>
+<label id="sector-other" hidden style="display:none">Which sector? *<input name="Sector (other)" placeholder="For example: optician, gym, dental practice" disabled></label>
 </fieldset>
 <fieldset><legend>The campaign</legend>
 <label>Neighbourhood or area to reach<input name="Area"></label>
@@ -38,7 +39,7 @@
 <label>Your goals *<textarea name="Message" rows="4" required placeholder="For example: more tyre-change bookings before winter."></textarea></label>
 </fieldset>
 <div><label class="consent"><input type="checkbox" required><span>I have read the <a href="privacy.html">privacy notice</a>.</span></label><button class="btn btn-primary" type="submit" style="cursor:pointer">Request a proposal</button><p class="note" style="margin:10px 0 0">This opens your email app with the message already filled in: press Send.</p><p class="thanks" hidden>Thank you! If your email app has opened, press Send to complete. Or write to us at info@boxad.it.</p></div>
-</form></div></section>
+</form><script>(function(){var s=document.querySelector('select[name="Sector"]'),l=document.getElementById('sector-other'),i=l.querySelector('input');function t(){var on=s.value==='Other';l.hidden=!on;l.style.display=on?'':'none';i.disabled=!on;i.required=on;}s.addEventListener('change',t);s.form.addEventListener('reset',function(){setTimeout(t)});t();})();</script></div></section>
 <section class="band"><div class="wrap">
     <h2>How your box could look<span class="dot">.</span></h2>
     <p class="lead">Different industries, same surface. The examples use fictional brands and only show the format.</p>

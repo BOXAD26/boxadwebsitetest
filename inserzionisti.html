@@ -36,7 +36,7 @@
 <fieldset><legend>La campagna</legend>
 <label>Quartiere o zona da raggiungere *<input name="Zona" required></label>
 <label>Cosa conta come successo per te? *<select name="Obiettivo" required><option value="" selected disabled>Scegli…</option><option>Prenotazioni o appuntamenti</option><option>Richieste dal QR code</option><option>Richieste di contatto o preventivo</option><option>Visite in negozio</option><option>Non lo so ancora: consigliatemi</option></select></label>
-<label>I tuoi obiettivi *<textarea name="Messaggio" rows="4" required placeholder="Per esempio: più appuntamenti per il cambio gomme prima dell’inverno."></textarea></label>
+<label>I tuoi obiettivi *<textarea name="Messaggio" rows="4" required placeholder="Per esempio: più clienti nuovi dalla zona nei prossimi due mesi."></textarea></label>
 </fieldset>
 <div><label class="consent"><input type="checkbox" required><span>Ho letto l’<a href="privacy.html">informativa privacy</a>.</span></label><button class="btn btn-primary" type="submit" style="cursor:pointer">Richiedi una proposta</button><p class="note" style="margin:10px 0 0">Si apre la tua app di posta con la richiesta già compilata: premi Invia.</p><p class="thanks" hidden>Grazie! Se la tua app di posta si è aperta, premi Invia per completare. Oppure scrivici a info@boxad.it.</p></div>
 </form><script>(function(){var s=document.querySelector('select[name="Settore"]'),l=document.getElementById('settore-altro'),i=l.querySelector('input');function t(){var on=s.value==='Altro';l.hidden=!on;l.style.display=on?'':'none';i.disabled=!on;i.required=on;}s.addEventListener('change',t);s.form.addEventListener('reset',function(){setTimeout(t)});t();})();</script></div></section>
